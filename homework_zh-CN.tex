@@ -1,0 +1,105 @@
+\documentclass{homework}
+
+% 可选的版式/字体配置示例（默认关闭，按需取消注释）：
+% \homeworksetlinespread{1.2}
+% \homeworksetmargins{left=2.6cm,right=2.6cm,top=2.2cm,bottom=2.4cm}
+% \homeworksetproblemtitlespacing{*1.8}{*1}
+% \homeworksetsolutionskip{0.6\baselineskip}{0.5\baselineskip}
+% \homeworksetCJKmainfont{Source Han Serif SC}
+% \homeworksetmainfont{Times New Roman}
+% \homeworksetmathfont{XITS Math}
+
+\renewcommand{\hmwkTitle}{第 1 次作业}
+\renewcommand{\hmwkDueDate}{2025 年 3 月 15 日}
+\renewcommand{\hmwkClass}{数值分析}
+\renewcommand{\hmwkClassTime}{周三 3-4 节}
+\renewcommand{\hmwkClassInstructor}{张老师}
+\renewcommand{\hmwkAuthorName}{张三}
+
+% 如需将“Solution”标题替换为中文，可按需启用：
+% \renewcommand{\solution}{\par\vspace{\hmwkSolutionBeforeSkip}\textbf{解答}\par\vspace{\hmwkSolutionAfterSkip}}
+
+\begin{document}
+
+\maketitle
+
+\pagebreak
+
+\begin{homeworkProblem}
+    设存在正的常数 \(c\)，使得当 \(n>1\) 时 \(f(n) \leq c\cdot g(n)\)。
+    求满足条件的常数 \(c\)。
+
+    \begin{enumerate}
+        \item \(f(n) = n^2 + n + 1\)，\(g(n) = 2n^3\)
+        \item \(f(n) = n\sqrt{n} + n^2\)，\(g(n) = n^2\)
+        \item \(f(n) = n^2 - n + 1\)，\(g(n) = n^2 / 2\)
+    \end{enumerate}
+
+    \solution
+
+    对每一小问分别估计上界即可求得一个可行的 \(c\)。
+
+    \textbf{小问一}
+
+    \[
+        \begin{split}
+            n^2 + n + 1
+            &\leq n^2 + n^2 + n^2\\
+            &= 3n^2\\
+            &\leq 2c\, n^3
+        \end{split}
+    \]
+
+    取 \(c = 2\) 即可满足条件。
+
+    \textbf{小问二}
+
+    \[
+        \begin{split}
+            n^2 + n\sqrt{n}
+            &= n^2 + n^{3/2}\\
+            &\leq n^2 + n^{4/2}\\
+            &= 2n^2\\
+            &\leq c\, n^2
+        \end{split}
+    \]
+
+    取 \(c = 2\) 即可。
+
+    \textbf{小问三}
+
+    \[
+        \begin{split}
+            n^2 - n + 1
+            &\leq n^2\\
+            &\leq \tfrac{1}{2}c\, n^2
+        \end{split}
+    \]
+
+    仍可令 \(c = 2\)。
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}
+    证明多项式
+    \(P(n) = a_kn^k + a_{k-1}n^{k-1} + \cdots + a_0\)
+    （其中 \(a_i \geq 0\)）属于 \(\Theta(n^k)\)。
+
+    \solution
+
+    因为每个系数均非负，故有
+    \(P(n) \geq a_kn^k\)，于是 \(P(n) = \Omega(n^k)\)。
+    另一方面，利用多项式的单调性可得
+
+    \[
+        P(n)
+        \leq (a_k + a_{k-1} + \cdots + a_0) n^k,
+    \]
+
+    从而存在常数 \(c_2 = a_k + \cdots + a_0\)，使得
+    \(P(n) \leq c_2 n^k\)，即 \(P(n) = O(n^k)\)。
+    结合上下界可知 \(P(n) = \Theta(n^k)\)。
+\end{homeworkProblem}
+
+\end{document}
