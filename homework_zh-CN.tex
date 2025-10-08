@@ -1,23 +1,28 @@
-\documentclass[lang=zh]{homework}
+\documentclass[lang=zh,problemstyle=boxed,theme=color,captionstyle=compact,subnumbering,tightlists,mathdelims,statmacros,localizedate]{homework}
 
-% 可选的版式/字体配置示例（默认关闭，按需取消注释）：
-% \homeworksetlinespread{1.2}
-% \homeworksetmargins{left=2.6cm,right=2.6cm,top=2.2cm,bottom=2.4cm}
-% \homeworksetproblemtitlespacing{*1.8}{*1}
-% \homeworksetsolutionskip{0.6\baselineskip}{0.5\baselineskip}
-% \homeworksetCJKmainfont{Source Han Serif SC}
-% \homeworksetmainfont{Times New Roman}
-% \homeworksetmathfont{XITS Math}
+% 推荐配置：行距、页边距、标题间距、解答标题间距
+\homeworksetlinespread{1.12}
+\homeworksetmargins{left=2.5cm,right=2.5cm,top=2.4cm,bottom=2.6cm}
+\homeworksetproblemtitlespacing{*1.6}{*1.0}
+\homeworksetsolutionskip{0.55\baselineskip}{0.45\baselineskip}
 
-\renewcommand{\hmwkTitle}{第 1 次作业}
-\renewcommand{\hmwkDueDate}{2025 年 3 月 15 日}
-\renewcommand{\hmwkClass}{数值分析}
+% 元信息与局部化标签
+\renewcommand{\hmwkTitle}{第 1 次作业示例}
+\renewcommand{\hmwkDueDate}{2025 年 3 月 15 日（周六）}
+\renewcommand{\hmwkClass}{概率论与数理统计}
 \renewcommand{\hmwkClassTime}{周三 3-4 节}
 \renewcommand{\hmwkClassInstructor}{张老师}
 \renewcommand{\hmwkAuthorName}{张三}
+\renewcommand{\hmwkSolutionName}{解题思路}
+\renewcommand{\qedsymbol}{\ensuremath{\blacksquare}}
 
-% 如需将“Solution”标题替换为中文，可按需启用：
-% \renewcommand{\solution}{\par\vspace{\hmwkSolutionBeforeSkip}\textbf{解答}\par\vspace{\hmwkSolutionAfterSkip}}
+% 题目钩子示例：在题目前后插入提示与分隔线
+\renewcommand{\homeworkBeforeProblemHook}{
+    \par\small\textbf{提示：}请在写解答前先确认题目需求。\par\medskip
+}
+\renewcommand{\homeworkAfterProblemHook}{
+    \par\medskip\rule{\linewidth}{0.4pt}\par\medskip
+}
 
 \begin{document}
 
@@ -25,81 +30,87 @@
 
 \pagebreak
 
-\begin{homeworkProblem}
-    设存在正的常数 \(c\)，使得当 \(n>1\) 时 \(f(n) \leq c\cdot g(n)\)。
-    求满足条件的常数 \(c\)。
+\begin{problem}
+    \textbf{学习目标概览。}本题展示 `homework` 文档类的核心要素：
+    \begin{itemize}
+        \item 自动页眉页脚与带框题面（`problemstyle=boxed`）。
+        \item 紧凑列表（`tightlists`）与自适应行距、页边距配置宏。
+        \item `mathdelims`/`statmacros` 提供的常用成对定界符和概率记号。
+    \end{itemize}
 
+    假设随机变量 $X$ 与 $Y$ 满足
+    $\Expect{X}=0$、$\Var{X}=1$、$\Cov(X,Y)=\rho$。请完成下列子任务：
     \begin{enumerate}
-        \item \(f(n) = n^2 + n + 1\)，\(g(n) = 2n^3\)
-        \item \(f(n) = n\sqrt{n} + n^2\)，\(g(n) = n^2\)
-        \item \(f(n) = n^2 - n + 1\)，\(g(n) = n^2 / 2\)
+        \item 证明 $\abs{\Cov(X,Y)} \leq \norm{Y}_2$。
+        \item 写出 $\Prob{\abs{Y}\leq 1}$ 的上下界，并化简 $\indicator{Y>0}$ 的期望。
+        \item 给出 $\BiasOf{\hat\theta}$ 的计算式，并判断其是否为 0。
     \end{enumerate}
 
     \solution
 
-    对每一小问分别估计上界即可求得一个可行的 \(c\)。\\
+    \begin{enumerate}
+        \item 由柯西-舒瓦兹不等式有
+            $\abs{\Cov(X,Y)}=\abs{\Expect{XY}}\leq\norm{X}_2\norm{Y}_2=\norm{Y}_2$。
+        \item 注意 $\Prob{\abs{Y}\leq 1}=1-\Prob{\abs{Y}>1}$，结合马尔可夫不等式可得
+            $\Prob{\abs{Y}>1}\leq\Expect{\abs{Y}}$，从而得到上下界。又
+            $\Expect{\indicator{Y>0}}=\Prob{Y>0}$。
+        \item 设估计量 $\hat\theta$，则
+            $\BiasOf{\hat\theta}=\Expect{\hat\theta}-\theta$。若 $\Expect{\hat\theta}=\theta$，偏差为 0。
+    \end{enumerate}
 
-    \textbf{小问一}
-
-    \[
-        \begin{split}
-            n^2 + n + 1
-            &\leq n^2 + n^2 + n^2\\
-            &= 3n^2\\
-            &\leq 2c\, n^3
-        \end{split}
-    \]
-
-    取 \(c = 2\) 即可满足条件。
-
-    \textbf{小问二}
-
-    \[
-        \begin{split}
-            n^2 + n\sqrt{n}
-            &= n^2 + n^{3/2}\\
-            &\leq n^2 + n^{4/2}\\
-            &= 2n^2\\
-            &\leq c\, n^2
-        \end{split}
-    \]
-
-    取 \(c = 2\) 即可。
-
-    \textbf{小问三}
-
-    \[
-        \begin{split}
-            n^2 - n + 1
-            &\leq n^2\\
-            &\leq \tfrac{1}{2}c\, n^2
-        \end{split}
-    \]
-
-    仍可令 \(c = 2\)。
-\end{homeworkProblem}
+    \begin{note}[延伸阅读]
+        若需要进一步探究，可在此处补充教材章节或参考资料。
+    \end{note}
+\end{problem}
 
 \pagebreak
 
-\begin{homeworkProblem}
-    证明多项式
-    \(P(n) = a_kn^k + a_{k-1}n^{k-1} + \cdots + a_0\)
-    （其中 \(a_i \geq 0\)）属于 \(\Theta(n^k)\)。
+\begin{problem}[矩估计与极大似然]
+    下列两个自变量的样本 $\{X_i\}_{i=1}^n$ 与 $\{Y_i\}_{i=1}^n$ 来自参数为 $\theta$ 的同一族分布。
+    请基于课堂方法完成题目。
+
+    \begin{subproblem}
+        写出利用样本矩构造的估计量，并说明是否无偏。
+    \end{subproblem}
+    \begin{subproblem}
+        给出极大似然方程，讨论 Newton 法迭代初值的选取策略。
+    \end{subproblem}
+    \begin{subproblem*}[补充讨论]
+        比较两种估计的方差，并说明何时选择其中之一更为稳健。
+    \end{subproblem*}
 
     \solution
 
-    因为每个系数均非负，故有
-    \(P(n) \geq a_kn^k\)，于是 \(P(n) = \Omega(n^k)\)。
-    另一方面，利用多项式的单调性可得
+    \begin{enumerate}
+        \item 矩估计令样本矩等于理论矩即可；若模型线性，则可无偏。
+        \item 极大似然方程可以写成 $\partial\ell(\theta)/\partial\theta=0$，常用 $\hat\theta_{\mathrm{MoM}}$ 作为初值。
+        \item 若数据存在离群点，优先选择方差更小的估计或结合截尾策略。
+    \end{enumerate}
+\end{problem}
 
-    \[
-        P(n)
-        \leq (a_k + a_{k-1} + \cdots + a_0) n^k,
-    \]
+\pagebreak
 
-    从而存在常数 \(c_2 = a_k + \cdots + a_0\)，使得
-    \(P(n) \leq c_2 n^k\)，即 \(P(n) = O(n^k)\)。
-    结合上下界可知 \(P(n) = \Theta(n^k)\)。
-\end{homeworkProblem}
+\homeworksetproblemtitle{附加练习：自适应排版}
+\begin{problem*}
+    本题演示题目标题的手动覆写与 \verb|problem*| 不累加编号的效果。
+    请根据以下要求完成：
+    \begin{enumerate}
+        \item 证明若 $f\colon \mathbb{R}\to\mathbb{R}$ 可导且 $f(0)=0$，则存在 $\xi\in(0,1)$ 使得
+            $f(1)=f'(\xi)$。
+        \item 使用 \verb|proof| 环境给出严格论证，并在结尾自动生成 $\blacksquare$。
+    \end{enumerate}
+
+    \solution
+
+    \begin{proof}
+        令 $g(x)=f(x)-f(0)-f'(0)x$，则 $g(0)=g(1)=0$。根据拉格朗日中值定理，存在
+        $\xi\in(0,1)$ 使得 $g'(\xi)=0$，进而得到 $f(1)=f'(\xi)$。
+    \end{proof}
+
+    \begin{note}
+        针对更复杂的排版需求，可结合 \verb|homeworkBeforeProblemHook| 与
+        \verb|homeworkAfterProblemHook| 注入额外结构化元素。
+    \end{note}
+\end{problem*}
 
 \end{document}

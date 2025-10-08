@@ -1,20 +1,28 @@
-\documentclass{homework}
+\documentclass[problemstyle=boxed,theme=color,captionstyle=compact,subnumbering,tightlists,mathdelims,statmacros,localizedate]{homework}
 
-% Optional configuration examples (uncomment to enable):
-% \homeworksetlinespread{1.15}
-% \homeworksetmargins{left=1in,right=1in,top=0.85in,bottom=1in}
-% \homeworksetproblemtitlespacing{*2}{*1}
-% \homeworksetsolutionskip{0.75\baselineskip}{0.5\baselineskip}
-% \homeworksetmainfont{Times New Roman}
-% \homeworksetCJKmainfont{SimSun}
-% \homeworksetmathfont{Latin Modern Math}
+% Recommended configuration: line spread, margins, heading spacing, solution spacing
+\homeworksetlinespread{1.12}
+\homeworksetmargins{left=1in,right=1in,top=0.95in,bottom=1.05in}
+\homeworksetproblemtitlespacing{*1.6}{*1.0}
+\homeworksetsolutionskip{0.55\baselineskip}{0.45\baselineskip}
 
-\renewcommand{\hmwkTitle}{Homework\ \#2}
-\renewcommand{\hmwkDueDate}{February 12, 2014}
-\renewcommand{\hmwkClass}{Calculus}
-\renewcommand{\hmwkClassTime}{Section A}
-\renewcommand{\hmwkClassInstructor}{Professor Isaac Newton}
-\renewcommand{\hmwkAuthorName}{\textbf{Josh Davis} \and \textbf{Davis Josh}}
+% Metadata and localized labels
+\renewcommand{\hmwkTitle}{Assignment \#1 Demo}
+\renewcommand{\hmwkDueDate}{March 15, 2025 (Saturday)}
+\renewcommand{\hmwkClass}{Probability and Statistics}
+\renewcommand{\hmwkClassTime}{Wed 3-4}
+\renewcommand{\hmwkClassInstructor}{Dr. Zhang}
+\renewcommand{\hmwkAuthorName}{Alice Smith}
+\renewcommand{\hmwkSolutionName}{Solution Outline}
+\renewcommand{\qedsymbol}{\ensuremath{\blacksquare}}
+
+% Hooks: add tips and separators around each problem
+\renewcommand{\homeworkBeforeProblemHook}{
+    \par\small\textbf{Heads-up:} Review the task before writing your solution.\par\medskip
+}
+\renewcommand{\homeworkAfterProblemHook}{
+    \par\medskip\rule{\linewidth}{0.4pt}\par\medskip
+}
 
 \begin{document}
 
@@ -22,399 +30,78 @@
 
 \pagebreak
 
-\begin{homeworkProblem}
-    Give an appropriate positive constant \(c\) such that \(f(n) \leq c \cdot
-    g(n)\) for all \(n > 1\).
+\begin{problem}
+    \textbf{Learning objectives overview.} This problem showcases the essentials of the `homework` class:
+    \begin{itemize}
+        \item Automatic headers/footers and boxed problems via `problemstyle=boxed`.
+        \item Compact lists (`tightlists`) with custom spacing helpers.
+        \item Paired delimiters and probability macros from `mathdelims` and `statmacros`.
+    \end{itemize}
 
+    Assume random variables $X$ and $Y$ satisfy $\Expect{X}=0$, $\Var{X}=1$, and $\Cov(X,Y)=\rho$. Complete the subtasks:
     \begin{enumerate}
-        \item \(f(n) = n^2 + n + 1\), \(g(n) = 2n^3\)
-        \item \(f(n) = n\sqrt{n} + n^2\), \(g(n) = n^2\)
-        \item \(f(n) = n^2 - n + 1\), \(g(n) = n^2 / 2\)
+        \item Prove that $\abs{\Cov(X,Y)} \leq \norm{Y}_2$.
+        \item Derive bounds for $\Prob{\abs{Y}\leq 1}$ and simplify $\indicator{Y>0}$.
+        \item Provide the formula for $\BiasOf{\hat\theta}$ and decide whether it vanishes.
     \end{enumerate}
 
     \solution
 
-    We solve each solution algebraically to determine a possible constant
-    \(c\).
-    \\
+    \begin{enumerate}
+        \item By Cauchy-Schwarz, $\abs{\Cov(X,Y)}=\abs{\Expect{XY}}\leq\norm{X}_2\norm{Y}_2=\norm{Y}_2$.
+        \item Note $\Prob{\abs{Y}\leq 1}=1-\Prob{\abs{Y}>1}$, and Markov gives $\Prob{\abs{Y}>1}\leq\Expect{\abs{Y}}$. Also $\Expect{\indicator{Y>0}}=\Prob{Y>0}$.
+        \item For an estimator $\hat\theta$, $\BiasOf{\hat\theta}=\Expect{\hat\theta}-\theta$. If $\Expect{\hat\theta}=\theta$, the bias is zero.
+    \end{enumerate}
 
-    \textbf{Part One}
-
-    \[
-        \begin{split}
-            n^2 + n + 1 &=
-            \\
-            &\leq n^2 + n^2 + n^2
-            \\
-            &= 3n^2
-            \\
-            &\leq c \cdot 2n^3
-        \end{split}
-    \]
-
-    Thus a valid \(c\) could be when \(c = 2\).
-    \\
-
-    \textbf{Part Two}
-
-    \[
-        \begin{split}
-            n^2 + n\sqrt{n} &=
-            \\
-            &= n^2 + n^{3/2}
-            \\
-            &\leq n^2 + n^{4/2}
-            \\
-            &= n^2 + n^2
-            \\
-            &= 2n^2
-            \\
-            &\leq c \cdot n^2
-        \end{split}
-    \]
-
-    Thus a valid \(c\) is \(c = 2\).
-    \\
-
-    \textbf{Part Three}
-
-    \[
-        \begin{split}
-            n^2 - n + 1 &=
-            \\
-            &\leq n^2
-            \\
-            &\leq c \cdot n^2/2
-        \end{split}
-    \]
-
-    Thus a valid \(c\) is \(c = 2\).
-
-\end{homeworkProblem}
+    \begin{note}[Further reading]
+        Add references or textbook sections here when students need extra context.
+    \end{note}
+\end{problem}
 
 \pagebreak
 
-\begin{homeworkProblem}
-    Let \(\Sigma = \{0, 1\}\). Construct a DFA \(A\) that recognizes the
-    language that consists of all binary numbers that can be divided by 5.
-    \\
+\begin{problem}[Method of Moments vs. MLE]
+    Suppose samples $\{X_i\}_{i=1}^n$ and $\{Y_i\}_{i=1}^n$ come from the same parametric family with parameter $\theta$. Use techniques from class.
 
-    Let the state \(q_k\) indicate the remainder of \(k\) divided by 5. For
-    example, the remainder of 2 would correlate to state \(q_2\) because \(7
-    \mod 5 = 2\).
-
-    \begin{figure}[h]
-        \centering
-        \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
-            \node[state, accepting, initial] (q_0)   {$q_0$};
-            \node[state] (q_1) [right=of q_0] {$q_1$};
-            \node[state] (q_2) [right=of q_1] {$q_2$};
-            \node[state] (q_3) [right=of q_2] {$q_3$};
-            \node[state] (q_4) [right=of q_3] {$q_4$};
-            \path[->]
-                (q_0)
-                    edge [loop above] node {0} (q_0)
-                    edge node {1} (q_1)
-                (q_1)
-                    edge node {0} (q_2)
-                    edge [bend right=-30] node {1} (q_3)
-                (q_2)
-                    edge [bend left] node {1} (q_0)
-                    edge [bend right=-30] node {0} (q_4)
-                (q_3)
-                    edge node {1} (q_2)
-                    edge [bend left] node {0} (q_1)
-                (q_4)
-                    edge node {0} (q_3)
-                    edge [loop below] node {1} (q_4);
-        \end{tikzpicture}
-        \caption{DFA, \(A\), this is really beautiful, ya know?}
-        \label{fig:multiple5}
-    \end{figure}
-
-    \textbf{Justification}
-    \\
-
-    Take a given binary number, \(x\). Since there are only two inputs to our
-    state machine, \(x\) can either become \(x0\) or \(x1\). When a 0 comes
-    into the state machine, it is the same as taking the binary number and
-    multiplying it by two. When a 1 comes into the machine, it is the same as
-    multipying by two and adding one.
-    \\
-
-    Using this knowledge, we can construct a transition table that tell us
-    where to go:
-
-    \begin{table}[ht]
-        \centering
-        \begin{tabular}{c || c | c | c | c | c}
-            & \(x \mod 5 = 0\)
-            & \(x \mod 5 = 1\)
-            & \(x \mod 5 = 2\)
-            & \(x \mod 5 = 3\)
-            & \(x \mod 5 = 4\)
-            \\
-            \hline
-            \(x0\) & 0 & 2 & 4 & 1 & 3 \\
-            \(x1\) & 1 & 3 & 0 & 2 & 4 \\
-        \end{tabular}
-    \end{table}
-
-    Therefore on state \(q_0\) or (\(x \mod 5 = 0\)), a transition line should
-    go to state \(q_0\) for the input 0 and a line should go to state \(q_1\)
-    for input 1. Continuing this gives us the Figure~\ref{fig:multiple5}.
-\end{homeworkProblem}
-
-\begin{homeworkProblem}
-    Write part of \alg{Quick-Sort($list, start, end$)}
-
-    \begin{algorithm}[]
-        \begin{algorithmic}[1]
-            \Function{Quick-Sort}{$list, start, end$}
-                \If{$start \geq end$}
-                    \State{} \Return{}
-                \EndIf{}
-                \State{} $mid \gets \Call{Partition}{list, start, end}$
-                \State{} \Call{Quick-Sort}{$list, start, mid - 1$}
-                \State{} \Call{Quick-Sort}{$list, mid + 1, end$}
-            \EndFunction{}
-        \end{algorithmic}
-        \caption{Start of QuickSort}
-    \end{algorithm}
-\end{homeworkProblem}
-
-\pagebreak
-
-\begin{homeworkProblem}
-    Suppose we would like to fit a straight line through the origin, i.e.,
-    \(Y_i = \beta_1 x_i + e_i\) with \(i = 1, \ldots, n\), \(\E [e_i] = 0\),
-    and \(\Var [e_i] = \sigma^2_e\) and \(\Cov[e_i, e_j] = 0, \forall i \neq
-    j\).
-    \\
-
-    \part
-
-    Find the least squares esimator for \(\hat{\beta_1}\) for the slope
-    \(\beta_1\).
-    \\
+    \begin{subproblem}
+        Write the moment estimator and comment on unbiasedness.
+    \end{subproblem}
+    \begin{subproblem}
+        Derive the likelihood equation and discuss initial guesses for Newton iterations.
+    \end{subproblem}
+    \begin{subproblem*}[Discussion]
+        Compare estimator variances and explain when one is more robust.
+    \end{subproblem*}
 
     \solution
 
-    To find the least squares estimator, we should minimize our Residual Sum
-    of Squares, RSS:
-
-    \[
-        \begin{split}
-            RSS &= \sum_{i = 1}^{n} {(Y_i - \hat{Y_i})}^2
-            \\
-            &= \sum_{i = 1}^{n} {(Y_i - \hat{\beta_1} x_i)}^2
-        \end{split}
-    \]
-
-    By taking the partial derivative in respect to \(\hat{\beta_1}\), we get:
-
-    \[
-        \pderiv{
-            \hat{\beta_1}
-        }{RSS}
-        = -2 \sum_{i = 1}^{n} {x_i (Y_i - \hat{\beta_1} x_i)}
-        = 0
-    \]
-
-    This gives us:
-
-    \[
-        \begin{split}
-            \sum_{i = 1}^{n} {x_i (Y_i - \hat{\beta_1} x_i)}
-            &= \sum_{i = 1}^{n} {x_i Y_i} - \sum_{i = 1}^{n} \hat{\beta_1} x_i^2
-            \\
-            &= \sum_{i = 1}^{n} {x_i Y_i} - \hat{\beta_1}\sum_{i = 1}^{n} x_i^2
-        \end{split}
-    \]
-
-    Solving for \(\hat{\beta_1}\) gives the final estimator for \(\beta_1\):
-
-    \[
-        \begin{split}
-            \hat{\beta_1}
-            &= \frac{
-                \sum {x_i Y_i}
-            }{
-                \sum x_i^2
-            }
-        \end{split}
-    \]
-
-    \pagebreak
-
-    \part
-
-    Calculate the bias and the variance for the estimated slope
-    \(\hat{\beta_1}\).
-    \\
-
-    \solution
-
-    For the bias, we need to calculate the expected value
-    \(\E[\hat{\beta_1}]\):
-
-    \[
-        \begin{split}
-            \E[\hat{\beta_1}]
-            &= \E \left[ \frac{
-                \sum {x_i Y_i}
-            }{
-                \sum x_i^2
-            }\right]
-            \\
-            &= \frac{
-                \sum {x_i \E[Y_i]}
-            }{
-                \sum x_i^2
-            }
-            \\
-            &= \frac{
-                \sum {x_i (\beta_1 x_i)}
-            }{
-                \sum x_i^2
-            }
-            \\
-            &= \frac{
-                \sum {x_i^2 \beta_1}
-            }{
-                \sum x_i^2
-            }
-            \\
-            &= \beta_1 \frac{
-                \sum {x_i^2 \beta_1}
-            }{
-                \sum x_i^2
-            }
-            \\
-            &= \beta_1
-        \end{split}
-    \]
-
-    Thus since our estimator's expected value is \(\beta_1\), we can conclude
-    that the bias of our estimator is 0.
-    \\
-
-    For the variance:
-
-    \[
-        \begin{split}
-            \Var[\hat{\beta_1}]
-            &= \Var \left[ \frac{
-                \sum {x_i Y_i}
-            }{
-                \sum x_i^2
-            }\right]
-            \\
-            &=
-            \frac{
-                \sum {x_i^2}
-            }{
-                \sum x_i^2 \sum x_i^2
-            } \Var[Y_i]
-            \\
-            &=
-            \frac{
-                \sum {x_i^2}
-            }{
-                \sum x_i^2 \sum x_i^2
-            } \Var[Y_i]
-            \\
-            &=
-            \frac{
-                1
-            }{
-                \sum x_i^2
-            } \Var[Y_i]
-            \\
-            &=
-            \frac{
-                1
-            }{
-                \sum x_i^2
-            } \sigma^2
-            \\
-            &=
-            \frac{
-                \sigma^2
-            }{
-                \sum x_i^2
-            }
-        \end{split}
-    \]
-
-\end{homeworkProblem}
+    \begin{enumerate}
+        \item Equate sample moments to theoretical moments; linear models often yield unbiased estimators.
+        \item Solve $\partial\ell(\theta)/\partial\theta=0$ and start Newton iterations at $\hat\theta_{\mathrm{MoM}}$.
+        \item When data include outliers, prefer the estimator with lower variance or apply robust tweaks.
+    \end{enumerate}
+\end{problem}
 
 \pagebreak
 
-\begin{homeworkProblem}
-    Prove a polynomial of degree \(k\), \(a_kn^k + a_{k - 1}n^{k - 1} + \hdots
-    + a_1n^1 + a_0n^0\) is a member of \(\Theta(n^k)\) where \(a_k \hdots a_0\)
-    are nonnegative constants.
+\homeworksetproblemtitle{Supplemental: Adaptive Layout}
+\begin{problem*}
+    This task demonstrates overriding the upcoming title and freezing numbering via `problem*`.
+    Follow the steps below:
+    \begin{enumerate}
+        \item Show that if $f\colon \mathbb{R}\to\mathbb{R}$ is differentiable with $f(0)=0$, then there exists $\xi\in(0,1)$ such that $f(1)=f'(\xi)$.
+        \item Use the `proof` environment so the $\blacksquare$ appears automatically at the end.
+    \end{enumerate}
+
+    \solution
 
     \begin{proof}
-        To prove that \(a_kn^k + a_{k - 1}n^{k - 1} + \hdots + a_1n^1 +
-        a_0n^0\), we must show the following:
-
-        \[
-            \exists c_1 \exists c_2 \forall n \geq n_0,\ {c_1 \cdot g(n) \leq
-            f(n) \leq c_2 \cdot g(n)}
-        \]
-
-        For the first inequality, it is easy to see that it holds because no
-        matter what the constants are, \(n^k \leq a_kn^k + a_{k - 1}n^{k - 1} +
-        \hdots + a_1n^1 + a_0n^0\) even if \(c_1 = 1\) and \(n_0 = 1\).  This
-        is because \(n^k \leq c_1 \cdot a_kn^k\) for any nonnegative constant,
-        \(c_1\) and \(a_k\).
-        \\
-
-        Taking the second inequality, we prove it in the following way.
-        By summation, \(\sum\limits_{i=0}^k a_i\) will give us a new constant,
-        \(A\). By taking this value of \(A\), we can then do the following:
-
-        \[
-            \begin{split}
-                a_kn^k + a_{k - 1}n^{k - 1} + \hdots + a_1n^1 + a_0n^0 &=
-                \\
-                &\leq (a_k + a_{k - 1} \hdots a_1 + a_0) \cdot n^k
-                \\
-                &= A \cdot n^k
-                \\
-                &\leq c_2 \cdot n^k
-            \end{split}
-        \]
-
-        where \(n_0 = 1\) and \(c_2 = A\). \(c_2\) is just a constant. Thus the
-        proof is complete.
+        Define $g(x)=f(x)-f(0)-f'(0)x$. Then $g(0)=g(1)=0$. By the mean value theorem, there exists $\xi\in(0,1)$ with $g'(\xi)=0$, which yields $f(1)=f'(\xi)$.
     \end{proof}
-\end{homeworkProblem}
 
-\pagebreak
-
-%
-% Non sequential homework problems
-%
-
-% Jump to problem 18
-\begin{homeworkProblem}[18]
-    Evaluate \(\sum_{k=1}^{5} k^2\) and \(\sum_{k=1}^{5} (k - 1)^2\).
-\end{homeworkProblem}
-
-% Continue counting to 19
-\begin{homeworkProblem}
-    Find the derivative of \(f(x) = x^4 + 3x^2 - 2\)
-\end{homeworkProblem}
-
-% Go back to where we left off
-\begin{homeworkProblem}[6]
-    Evaluate the integrals
-    \(\int_0^1 (1 - x^2) \dx\)
-    and
-    \(\int_1^{\infty} \frac{1}{x^2} \dx\).
-\end{homeworkProblem}
+    \begin{note}
+        To further customize layout, combine `homeworkBeforeProblemHook` and `homeworkAfterProblemHook` with additional structured material.
+    \end{note}
+\end{problem*}
 
 \end{document}

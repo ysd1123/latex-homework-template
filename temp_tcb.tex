@@ -1,0 +1,14 @@
+\documentclass{article}
+\usepackage{xcolor,tcolorbox}
+\csname tcbuselibrary\endcsname{skins,breakable}
+\csname tcbset\endcsname{colback=white}
+\newcommand{\hwkProblemColback}{teal!8}
+\newcommand{\hwkProblemColframe}{teal!60!black!35}
+\csname tcbset\endcsname{
+	homework problem/.style={enhanced,breakable,colback=\hwkProblemColback,colframe=\hwkProblemColframe,left=8pt,right=8pt,top=6pt,bottom=6pt,boxrule=0.8pt,arc=2pt,sharp corners=all,frame style={opacity=0.9},before skip=8pt,after skip=12pt}
+}
+\begin{document}
+\begin{tcolorbox}[homework problem]
+Hello
+\end{tcolorbox}
+\end{document}
