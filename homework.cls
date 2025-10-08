@@ -1,17 +1,68 @@
 % Homework assignment class based on the original template
-% Provides XeLaTeX/ctex support and configurable layout hooks
+% Provides optional Chinese (ctex) support and configurable layout hooks
+% Added option: lang = zh | zh-plain | en (default)
+%   zh:       base on ctexart (inherits all Chinese defaults, class options pass to ctexart)
+%   zh-plain: base on article + \usepackage[scheme=plain]{ctex} (minimal Chinese support, similar to previous version)
+%   en:       base on article only (no ctex loaded, CJK helpers become no-ops)
+% Usage examples:
+%   \documentclass{homework}                    % English (no ctex)
+%   \documentclass[lang=zh]{homework}           % Chinese full defaults (ctexart)
+%   \documentclass[lang=zh-plain]{homework}     % Chinese minimal (article + ctex[scheme=plain])
+%   \documentclass[lang=en]{homework}           % Explicit English
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{homework}[2024/05/08 Homework assignment class]
 
-\LoadClass{article}
+% -------------------------------------------------------------
+% Option handling
+% -------------------------------------------------------------
+\newif\ifhwk@lang@zh
+\newif\ifhwk@lang@zhplain
+% default English (both flags false)
 
-% Encoding and font support
+% capture lang option
+\DeclareOption{lang=zh}{\hwk@lang@zhtrue}
+\DeclareOption{lang=zh-plain}{\hwk@lang@zhplaintrue}
+\DeclareOption{lang=en}{% explicit English -> no flags
+}
+% generic key form lang=<value>
+\DeclareOption*{%
+  \begingroup
+    \edef\temp@opt{\CurrentOption}
+    \expandafter\ifx\temp@opt\@empty\else
+      % try to parse lang= prefix manually (already handled above for known values)
+    \fi
+  \endgroup
+  % pass unknown options to the base class (article/ctexart)
+  \PassOptionsToClass{\CurrentOption}{article}% will be ignored by ctexart if unsupported
+}
+\ProcessOptions\relax
+
+% -------------------------------------------------------------
+% Base class loading depending on lang
+% -------------------------------------------------------------
+\ifhwk@lang@zh
+  % Full Chinese: use ctexart as base so class options apply
+  \LoadClassWithOptions{ctexart}
+  \newcommand*\hwk@ctexloaded{1}
+  % Ensure section (Problem N) headings are left aligned like article
+  \AtBeginDocument{\ctexset{section/format += \raggedright}}
+\else\ifhwk@lang@zhplain
+  % Minimal Chinese: article + ctex package (plain scheme)
+  \LoadClass{article}
+  \RequirePackage[scheme=plain]{ctex}
+  \newcommand*\hwk@ctexloaded{1}
+\else
+  % English only
+  \LoadClass{article}
+  \newcommand*\hwk@ctexloaded{0}
+\fi\fi
+
+% Encoding and font support (only check engine when Chinese or user may want fontspec)
 \RequirePackage{ifxetex}
 \RequirePackage{ifluatex}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0
   \ClassError{homework}{The homework class requires XeLaTeX or LuaLaTeX}{Compile this document with XeLaTeX (recommended) or LuaLaTeX.}
 \fi
-\RequirePackage[scheme=plain]{ctex}
 \RequirePackage{fontspec}
 
 % Mathematics and algorithm packages
@@ -64,9 +115,20 @@
 }
 
 % Font customization helpers (optional)
-\newcommand{\homeworksetCJKmainfont}[2][]{\setCJKmainfont[#1]{#2}}
-\newcommand{\homeworksetCJKsansfont}[2][]{\setCJKsansfont[#1]{#2}}
-\newcommand{\homeworksetCJKmonofont}[2][]{\setCJKmonofont[#1]{#2}}
+% If ctex not loaded (English mode), provide no-op wrappers but warn once when used.
+\makeatletter
+\ifx\hwk@ctexloaded\@undefined\def\hwk@ctexloaded{0}\fi
+\newcommand\hwk@maybe@warn[1]{\ifnum\hwk@ctexloaded=0 \ClassWarning{homework}{CJK font command '#1' used but ctex not loaded (lang=en). No effect}\fi}
+\ifnum\hwk@ctexloaded=1
+  \newcommand{\homeworksetCJKmainfont}[2][]{\setCJKmainfont[#1]{#2}}
+  \newcommand{\homeworksetCJKsansfont}[2][]{\setCJKsansfont[#1]{#2}}
+  \newcommand{\homeworksetCJKmonofont}[2][]{\setCJKmonofont[#1]{#2}}
+\else
+  \newcommand{\homeworksetCJKmainfont}[2][]{\hwk@maybe@warn{homeworksetCJKmainfont}}
+  \newcommand{\homeworksetCJKsansfont}[2][]{\hwk@maybe@warn{homeworksetCJKsansfont}}
+  \newcommand{\homeworksetCJKmonofont}[2][]{\hwk@maybe@warn{homeworksetCJKmonofont}}
+\fi
+\makeatother
 \newcommand{\homeworksetmainfont}[2][]{\setmainfont[#1]{#2}}
 \newcommand{\homeworksetsansfont}[2][]{\setsansfont[#1]{#2}}
 \newcommand{\homeworksetmonofont}[2][]{\setmonofont[#1]{#2}}
@@ -134,12 +196,21 @@
 \title{%
   \vspace{2in}%
   \textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
-  \normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate}\
-  \vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}%
+  \vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}\\
+  \normalsize\vspace{0.1in}\small{Due\ Date:\ \hmwkDueDate}%
   \vspace{3in}%
 }
 \author{\hmwkAuthorName}
-\date{}
+\date{\today}
+
+\makeatletter
+\let\hmwk@oldmaketitle\maketitle
+\renewcommand{\maketitle}{%
+  \hmwk@oldmaketitle
+  \thispagestyle{empty}% 去掉标题页页码/页脚
+  \setcounter{page}{0}% 让下一页成为第 1 页
+}
+\makeatother
 
 % Helper macros
 \newcommand{\alg}[1]{\textsc{\bfseries \footnotesize #1}}

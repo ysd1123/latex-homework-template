@@ -1,0 +1,146 @@
+\documentclass[10pt, a4paper, oneside]{ctexart}
+\usepackage{amsmath, amsthm, amssymb, bm, xcolor, framed, graphicx, hyperref, mathrsfs,ulem,float}
+\usepackage{titling,geometry}
+\usepackage{graphicx,caption,subcaption,enumitem,wrapfig}
+\usepackage{lipsum,zhlipsum}
+\usepackage[siunitx]{circuitikz}
+\geometry{a4paper,scale=0.75}
+\setlength{\droptitle}{-1.5cm}
+
+\colorlet{shadecolor1}{blue!5} %颜色可自定义
+\colorlet{framecolor1}{shadecolor1}
+
+\colorlet{shadecolor2}{shadecolor1!50!black!10}
+\colorlet{framecolor2}{shadecolor2}
+
+\newenvironment{framedshaded}[2]
+  {\def\FrameCommand{\setlength{\FrameRule}{1pt}\fboxsep=\FrameSep \fcolorbox{#1}{#2}} \MakeFramed {\FrameRestore}}
+  {\endMakeFramed}
+
+\newcounter{problemname}
+\newcounter{subproblemname}
+
+\newenvironment{problem} [1][\arabic{problemname}]
+  {\begin{framedshaded}{framecolor1}{shadecolor1}\stepcounter{problemname}\par\noindent\textbf{#1. }}
+  {\end{framedshaded}\par\setcounter{subproblemname}{0}}
+
+\newenvironment{problem*}[1][\arabic{problemname}]
+  {\begin{framedshaded}{framecolor1}{shadecolor1}\par\noindent\textbf{#1. }}
+  {\end{framedshaded}\par\setcounter{subproblemname}{0}}
+
+\newenvironment{subproblem}[1][\arabic{problemname}.\arabic{subproblemname}]
+  {\begin{framedshaded}{framecolor2}{shadecolor2}\stepcounter{subproblemname}\par\noindent\textbf{#1. }}
+  {\end{framedshaded}\par}
+
+\newenvironment{subproblem*}[1][\arabic{problemname}.\arabic{subproblemname}]
+  {\begin{framedshaded}{framecolor2}{shadecolor2}\par\noindent\textbf{#1. }}
+  {\end{framedshaded}\par}
+
+\newenvironment{solution}
+  {\par\noindent\textbf{解 }}
+  {\par }
+
+\renewenvironment{proof}
+  {\par\noindent\textbf{证 }}
+  {\hfill $\blacksquare$ \par }
+
+\newenvironment{note}[1][题目\arabic{problemname}的注记]
+  {\par\noindent\textbf{#1. }}
+  {\par}
+
+\renewcommand{\figurename}{fig}
+\renewcommand{\thefigure}{\arabic{figure}}
+\captionsetup{margin=10pt , font=small, labelfont=bf, labelsep=period,skip=5pt , labelformat=simple}
+
+
+\title{\textbf{作业模板}}
+\author{作者\textbackslash 解答者}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace*{-1.0cm}
+
+这是一个LaTeX作业排版模板的使用介绍。模板提供了方便的环境来排版作业题目、子题目、解答和证明等。
+
+模板主要环境包括：
+\begin{itemize}
+  \item \verb|problem|：用于主题目，会自动编号。
+  \item \verb|subproblem|：用于子题目，在主题目下自动编号。
+  \item \verb|solution|：用于书写解答。
+  \item \verb|proof|：用于书写证明，结尾自动添加证明结束符号。
+  \item \verb|note|：用于添加注记，与当前题目关联。
+\end{itemize}
+使用自定义编号时，可以在环境开始命令中指定，例如 \verb|\begin{problem}[自定义编号]|。使用带星号的环境（如 problem*）可以避免编号自增。
+
+模板还预设了颜色和框架样式，使内容更美观。支持插入图片和 TikZ 绘图，示例中展示了基本用法。
+
+要使用模板，将提供的代码保存为 .tex 文件，使用支持中文的 LaTeX 引擎（如 XeLaTeX）编译。然后根据需要修改内容，替换示例文字为自己的题目和解答。
+
+参考模板中的示例来编写题目、子题目、解答和注记。对于更复杂的排版，可以调整模板中的宏包和设置。
+
+\begin{problem}
+  这是一个好的题目，因为它使用了\verb|problem|环境。
+\end{problem}
+\begin{subproblem}
+  因为这是一个好题目，所有它有一道子题目，且使用了\verb|subproblem|环境。
+\end{subproblem}
+\begin{solution}
+  为了表达解决这个好问题的喜悦，我使用\texttt{Ti\textit{k}Z}绘制一张好图(fig.\ref{fig:nicefig})。
+  \begin{note}
+    Ti\textit{k}Z是``Ti\textit{k}Z ist \textit{k}ein Zeichenprogramm''的递归缩写。
+  \end{note}
+\end{solution}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \filldraw[rounded corners,fill=blue!10] (0,0) rectangle (4,2);
+    \draw (1.2,1) -- (2,0.2) -- (3.5,1.8);
+    \node[shape=rectangle] (txt) at (2, 1) {\small{Hello!}};
+  \end{tikzpicture}
+  \caption{好图（也可以称之为``不错的图片''）。}\label{fig:nicefig}
+\end{figure}
+\begin{subproblem*}[题目\arabic{problemname}的附加子题]
+  使用\verb|\begin{problem}[自定义题目编号]|可以自定义题目编号。默认后续题目会继续递增题目编号记数器，使用\verb|problem*|可以使编号不自增。对于\verb|subproblem|也可以如此使用。
+\end{subproblem*}
+\begin{subproblem}
+  \footnotesize{一段乱数假文。\lipsum[1]}
+\end{subproblem}
+\begin{solution}
+  \footnotesize{也是乱数假文。\zhlipsum[1]}
+\end{solution}
+
+\begin{problem}[2.正经例题]
+	\noindent 设计一个 \( R = 2\,\text{k}\Omega \)，\( V_{OL} = 0.05\,\text{V} \) 的电阻负载反相器，增强型 nMOS 驱动晶体管参数如下：
+	\begin{flalign*}
+	V_{DD} &= 1.1\,\text{V} &\\
+	V_{T0} &= 0.52\,\text{V} &\\
+	\gamma &= 0\,\text{V}^{1/2}& \\
+	\lambda &= 0 &\\
+	\mu_n C_{ox} &= 216\,\mu\text{A/V}^2 &
+	\end{flalign*}
+	\noindent \textbf{a.} 求所需的宽长比 \( W/L \)。
+
+	\noindent \textbf{b.} 求 \( V_{IL} \) 和 \( V_{IH} \)。
+
+\noindent \textbf{c.} 求噪声容限 \( NM_L \) 和 \( NM_H \)。
+\end{problem}
+\begin{solution}
+\begin{itemize}
+	\item[\textbf{a.\ }]输入为 \( V_{DD} \) 时，输出为 \( V_{OL} \)，可列写：
+		\[
+		\frac{V_{DD} - V_{OL}}{R} = \frac{1}{2}\mu_n C_{ox} \frac{W}{L} \left[ 2(V_{DD} - V_{T0})V_{OL} - V_{OL}^2 \right]
+		\]
+		解得 \( {W}/{L} = 87.59 \)
+	\item[\textbf{b.\ }] \( k_n R_L = 37.84 \, V^{-1} \)
+		\[
+		V_{IL} = V_{T0} + \frac{1}{k_n R_L} = 0.546 \, \text{V}
+		\]
+		\[
+		V_{IH} = V_{T0} + \sqrt{\frac{8}{3} \cdot \frac{V_{DD}}{k_n R_L}} - \frac{1}{k_n R_L} = 0.772 \, \text{V}
+		\]
+	\item[\textbf{c.\ }] \[ NM_L = V_{IL} - V_{OL} = 0.496 \, \text{V} \]
+		\[ NM_H = V_{OH} - V_{IH} = 0.328 \, \text{V} \]
+\end{itemize}
+\end{solution}
+\end{document}
