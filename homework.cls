@@ -148,9 +148,8 @@
 \pagestyle{fancy}
 \fancyhf{}
 \lhead{\hmwkAuthorName}
-\chead{\hmwkClass\ (\hmwkClassInstructor\ \hmwkClassTime): \hmwkTitle}
-\rhead{\firstxmark}
-\lfoot{\lastxmark}
+\chead{\hmwkClass\ (\hmwkClassInstructor)}
+\rhead{\hmwkTitle}
 \cfoot{\thepage}
 \renewcommand\headrulewidth{0.4pt}
 \renewcommand\footrulewidth{0.4pt}
@@ -197,7 +196,8 @@
 \title{%
   \vspace{2in}%
   \textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
-  \vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}\\
+  \vspace{0.1in}\large{Instructor: \textit{\hmwkClassInstructor}}\\
+  \vspace{0.1in}\large{\hmwkClassTime}\\
   \normalsize\vspace{0.1in}\small{Due\ Date:\ \hmwkDueDate}%
   \vspace{3in}%
 }
