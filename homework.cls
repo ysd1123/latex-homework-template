@@ -1,63 +1,63 @@
-% Homework assignment class based on the original template
-% Provides optional Chinese (ctex) support and configurable layout hooks
-% Added option: lang = zh | zh-plain | en (default)
-%   zh:       base on ctexart (inherits all Chinese defaults, class options pass to ctexart)
-%   zh-plain: base on article + \usepackage[scheme=plain]{ctex} (minimal Chinese support, similar to previous version)
-%   en:       base on article only (no ctex loaded, CJK helpers become no-ops)
-% Usage examples:
-%   \documentclass{homework}                    % English (no ctex)
-%   \documentclass[lang=zh]{homework}           % Chinese full defaults (ctexart)
-%   \documentclass[lang=zh-plain]{homework}     % Chinese minimal (article + ctex[scheme=plain])
-%   \documentclass[lang=en]{homework}           % Explicit English
+% 基于原版模板修改的作业（Homework）文档类
+% 提供了可选的中文（ctex）支持以及可配置的排版选项
+% 新增语言选项：lang = zh | zh-plain | en（默认）
+%   zh:       基于 ctexart 类（继承所有中文默认排版设置，类选项会传递给 ctexart）
+%   zh-plain: 基于 article 类并通过 \usepackage[scheme=plain]{ctex} 加载（提供基础的中文支持，但保留英文文档的排版习惯）
+%   en:       仅基于 article 类（默认选项，不加载 ctex 宏包，所有 CJK 字体辅助命令将失效，以保证纯英文环境下编译不报错）
+% 用法示例：
+%   \documentclass{homework}                    % 默认英文环境（不加载 ctex）
+%   \documentclass[lang=zh]{homework}           % 纯中文环境（基于 ctexart）
+%   \documentclass[lang=zh-plain]{homework}     % 中英混排环境（基础版中文支持）
+%   \documentclass[lang=en]{homework}           % 显式指定英文环境
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{homework}[2024/05/08 Homework assignment class]
+\ProvidesClass{homework}[2026/03/13 Homework Assignment Class]
 
 % -------------------------------------------------------------
-% Option handling
+% 类选项处理 (Option handling)
 % -------------------------------------------------------------
 \newif\ifhwk@lang@zh
 \newif\ifhwk@lang@zhplain
-% default English (both flags false)
+% 默认状态下为英文环境（两个布尔标记均为 false）
 
-% capture lang option
+% 捕获预设的 lang 选项
 \DeclareOption{lang=zh}{\hwk@lang@zhtrue}
 \DeclareOption{lang=zh-plain}{\hwk@lang@zhplaintrue}
-\DeclareOption{lang=en}{% explicit English -> no flags
+\DeclareOption{lang=en}{% 显式指定英文 -> 不修改布尔状态
 }
-% generic key form lang=<value>
+% 处理一般形式的类选项
 \DeclareOption*{%
   \begingroup
     \edef\temp@opt{\CurrentOption}
     \expandafter\ifx\temp@opt\@empty\else
-      % try to parse lang= prefix manually (already handled above for known values)
+      % 尝试手动解析 lang= 前缀选项（已知值已在上方处理，此处可预留未来扩展）
     \fi
   \endgroup
-  % pass unknown options to the base class (article/ctexart)
-  \PassOptionsToClass{\CurrentOption}{article}% will be ignored by ctexart if unsupported
+  % 将未知的类选项透传给 article 基类（如果后续加载的是 ctexart，不支持的选项会被自动忽略并产生警告）
+  \PassOptionsToClass{\CurrentOption}{article}%
 }
 \ProcessOptions\relax
 
 % -------------------------------------------------------------
-% Base class loading depending on lang
+% 根据语言选项加载底层的文档类
 % -------------------------------------------------------------
 \ifhwk@lang@zh
-  % Full Chinese: use ctexart as base so class options apply
+  % 完整中文支持环境：使用 ctexart 作为基类，使其能正确接收并应用 \documentclass 的类选项（如字号等）
   \LoadClassWithOptions{ctexart}
   \newcommand*\hwk@ctexloaded{1}
-  % Ensure section (Problem N) headings are left aligned like article
+  % 确保章节（例如 Problem N）的标题像 article 类一样左对齐，而不是默认居中
   \AtBeginDocument{\ctexset{section/format += \raggedright}}
 \else\ifhwk@lang@zhplain
-  % Minimal Chinese: article + ctex package (plain scheme)
+  % 基础中文支持环境：使用 article 作为基类，并额外引入 ctex 宏包（使用 plain 方案以保持英文排版）
   \LoadClass{article}
   \RequirePackage[scheme=plain]{ctex}
   \newcommand*\hwk@ctexloaded{1}
 \else
-  % English only
+  % 纯英文环境
   \LoadClass{article}
   \newcommand*\hwk@ctexloaded{0}
 \fi\fi
 
-% Encoding and font support (only check engine when Chinese or user may want fontspec)
+% 编译引擎与字体支持（现代 LaTeX 强烈建议使用 XeLaTeX 或 LuaLaTeX 以支持 fontspec 及中文环境）
 \RequirePackage{ifxetex}
 \RequirePackage{ifluatex}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0
@@ -65,7 +65,7 @@
 \fi
 \RequirePackage{fontspec}
 
-% Mathematics and algorithm packages
+% 引入数学与算法宏包
 \RequirePackage{amsmath}
 \RequirePackage{amsthm}
 \RequirePackage{amsfonts}
@@ -74,7 +74,7 @@
 \RequirePackage[plain]{algorithm}
 \RequirePackage{algpseudocode}
 
-% Header/footer and section formatting
+% 引入页眉页脚与章节格式设定宏包
 \RequirePackage{fancyhdr}
 \RequirePackage{extramarks}
 \RequirePackage{titlesec}
@@ -82,7 +82,7 @@
 \RequirePackage{geometry}
 \RequirePackage{etoolbox}
 
-% Default layout closely follows the original template
+% 默认页面布局设置（尽可能兼容原版英文模板的边距参数）
 \setlength{\topmargin}{-0.45in}
 \setlength{\evensidemargin}{0in}
 \setlength{\oddsidemargin}{0in}
@@ -93,13 +93,13 @@
 \linespread{1.1}\selectfont
 \setlength{\parindent}{0pt}
 
-% Optional layout adjustment helpers (disabled by default)
-% Users may uncomment the corresponding commands in their documents.
+% 布局调整辅助命令（可选项，默认禁用）
+% 用户可以在文档的导言区解除注释，并自行定义对应命令所需的间距参数
 \newcommand{\homeworksetlinespread}[1]{\linespread{#1}\selectfont}
 \newcommand{\homeworksetmargins}[1]{\geometry{#1}}
 \newcommand{\homeworksetproblemtitlespacing}[2]{\titlespacing*{\section}{0pt}{#1}{#2}}
 
-% Solution heading spacing controls
+% 用于控制 \solution (解答) 标题及其上下文的间距
 \newlength{\hmwkSolutionBeforeSkip}
 \newlength{\hmwkSolutionAfterSkip}
 \setlength{\hmwkSolutionBeforeSkip}{0.5\baselineskip}
@@ -114,8 +114,9 @@
   \par\vspace{\hmwkSolutionAfterSkip}%
 }
 
-% Font customization helpers (optional)
-% If ctex not loaded (English mode), provide no-op wrappers but warn once when used.
+% 字体自定义辅助命令 (可选的)
+% 如果是纯英文模式 (未加载 ctex)，为了防止引发 Undefined control sequence 错误，
+% 我们提供空操作的包裹命令，但只在首次调用时抛出宏包警告提示用户命令不起作用。
 \makeatletter
 \ifx\hwk@ctexloaded\@undefined\def\hwk@ctexloaded{0}\fi
 \newcommand\hwk@maybe@warn[1]{\ifnum\hwk@ctexloaded=0 \ClassWarning{homework}{CJK font command '#1' used but ctex not loaded (lang=en). No effect}\fi}
@@ -143,7 +144,7 @@
 }
 \makeatother
 
-% Fancyhdr configuration
+% fancyhdr 页眉页脚排版配置
 \pagestyle{fancy}
 \fancyhf{}
 \lhead{\hmwkAuthorName}
@@ -154,7 +155,7 @@
 \renewcommand\headrulewidth{0.4pt}
 \renewcommand\footrulewidth{0.4pt}
 
-% Problem section helpers
+% 作业题目区块环境 (Problem section) 及翻页标记(Extramarks)处理辅助命令
 \newcommand{\enterProblemHeader}[1]{%
   \nobreak\extramarks{}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
   \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
@@ -182,7 +183,7 @@
   \exitProblemHeader{homeworkProblemCounter}%
 }
 
-% Metadata defaults (users should redefine in their documents)
+% 文档元数据（预设了一些带默认值的宏，用户需在文档导言区重定义其内容以匹配自身信息）
 \newcommand{\hmwkTitle}{Homework}
 \newcommand{\hmwkDueDate}{}
 \newcommand{\hmwkClass}{Course Name}
@@ -192,7 +193,7 @@
 
 \renewcommand{\part}[1]{\textbf{\large Part \Alph{partCounter}}\stepcounter{partCounter}\\}
 
-% Title page configuration
+% 封面标题页 (Title page) 排版配置
 \title{%
   \vspace{2in}%
   \textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
@@ -212,7 +213,7 @@
 }
 \makeatother
 
-% Helper macros
+% 常用数学符号及其它辅助宏命令
 \newcommand{\alg}[1]{\textsc{\bfseries \footnotesize #1}}
 \newcommand{\deriv}[1]{\frac{\mathrm{d}}{\mathrm{d}x} (#1)}
 \newcommand{\pderiv}[2]{\frac{\partial}{\partial #1} (#2)}
